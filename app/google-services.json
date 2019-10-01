@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1000229929279",
+    "firebase_url": "https://radioapp-26fc5.firebaseio.com",
+    "project_id": "radioapp-26fc5",
+    "storage_bucket": "radioapp-26fc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000229929279:android:0c8470b7fac4548808138a",
+        "android_client_info": {
+          "package_name": "com.obadajasem.blablabla"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000229929279-v7t2stg6chjs57ef3ge5t9s9k0jgmct7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.obadajasem.blablabla",
+            "certificate_hash": "4f89a0277d2276ab8827e0feaa21fcbbd1fd7435"
+          }
+        },
+        {
+          "client_id": "1000229929279-0v4ltup1icvriqmec3t3l0ujh6q9bdfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC4Syqq9oHEq9JkrNpoXzubxToH3qBj4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000229929279-0v4ltup1icvriqmec3t3l0ujh6q9bdfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

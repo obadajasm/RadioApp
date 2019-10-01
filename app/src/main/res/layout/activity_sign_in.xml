@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  tools:context="com.obadajasem.blablabla.sign.SignIn"
+    android:orientation="vertical"
+    android:background="@drawable/back"
+   >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="32dp"
+        android:text="Sign in"
+        android:textColor="@color/viewBg"
+        android:textSize="32sp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    >
+    <EditText
+        android:shadowColor="@color/viewBg"
+        android:textColorHint="@color/viewBg"
+        android:gravity="center_horizontal"
+        android:id="@+id/signin_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:inputType="textPassword"
+        android:shadowColor="@color/viewBg"
+        android:textColorHint="@color/viewBg"
+        android:gravity="center_horizontal"
+        android:id="@+id/signin_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:hint="password" />
+</LinearLayout>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <Button
+            android:textColor="@color/viewBg"
+            android:background="@color/btn"
+            android:id="@+id/signin_btnin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Sign in"
+            android:layout_weight="0.3"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"></LinearLayout>
+
+
+
+            <Button
+            android:textColor="@color/viewBg"
+            android:background="@color/btn"
+            android:id="@+id/signin_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up"
+            android:layout_weight="0.3"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>
