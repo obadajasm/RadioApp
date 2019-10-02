@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -30,6 +31,7 @@ import com.obadajasem.blablabla.adapter.AlbumsAdapter;
 import com.obadajasem.blablabla.api.RadioApi;
 import com.obadajasem.blablabla.model.Station;
 import com.obadajasem.blablabla.Services.PlayerService;
+import com.obadajasem.blablabla.sign.SignIn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +48,11 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
     public static final String STATION_STATE = "STATE";
     public static final String STATION_URL = "URL";
     public static final String STATION_IMG = "IMG";
-    public static final String STATION_FAVOURIT ="favourit" ;
-    public static final String STATION_FAVOURIT_NAME ="NAME" ;
-    public static final String STATION_FAVOURIT_URL ="FAV_URL" ;
-    public static final String STATION_FAVOURIT_IMG ="FAV_IMG" ;
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
     private List<Station> stationList;
     private FirebaseAuth mAuth;
-    private TextView welcometv;
+//    private TextView gomaintv;
     private Menu menu;
     private ProgressBar progressBar;
 
@@ -62,15 +60,22 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        welcometv = findViewById(R.id.welcome);
+//       gomaintv = findViewById(R.id.gomain);
         progressBar = findViewById(R.id.progressbar);
         mAuth = FirebaseAuth.getInstance();
 
-      String  username = mAuth.getCurrentUser().getDisplayName() ;
+//try {
+//    String  username = mAuth.getCurrentUser().getDisplayName() ;
+//
+//    if( TextUtils.isEmpty(username)) {
+//        welcometv.setText("Welcome ");
+//    }else{
+//        welcometv.setText("Welcome " + username);
+//    }
+//}catch (Exception e ){
+//    Log.d(TAG, "onCreate: "+e.toString());
+//}
 
-      if(!(username.equals("")))
-        welcometv.setText("Welcome "+username);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         recyclerView.setAdapter(adapter);
         fetchData();
    try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrop));
+            Glide.with(this).load(R.drawable.newcover).into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,9 +107,11 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
                 .build();
         RadioApi radioApi = retrofit.create(RadioApi.class);
         Call<List<Station>> call = radioApi.getstations();
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<List<Station>>() {
             @Override
             public void onResponse(Call<List<Station>> call, Response<List<Station>> response) {
+                progressBar.setVisibility(View.GONE);
                 if (!response.isSuccessful()) {
                     toasty("onResponse code :" + response.code());
                     return;
@@ -128,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
             @Override
             public void onFailure(Call<List<Station>> call, Throwable t) {
+                toasty("Something Went Bad Check Yout Internet Connection Or Try Again");
+                progressBar.setVisibility(View.GONE);
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
@@ -158,12 +167,12 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
                 }
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbar.setTitle(getString(R.string.app_name));
-                    showOption(R.id.action_info);
+//                    showOption(R.id.action_info);
                     isShow = true;
                 } else if (isShow) {
 
                     collapsingToolbar.setTitle(" ");
-                    hideOption(R.id.action_info);
+//                    hideOption(R.id.action_info);
                     isShow = false;
                 }
             }
@@ -176,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        hideOption(R.id.action_info);
+//        hideOption(R.id.action_info);
         return true;
     }
 
@@ -190,10 +199,11 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            toasty("go to Setting ");
-            return true;
-        } else if (id == R.id.action_info) {
-            toasty("go to info ");
+            if(mAuth!= null)
+          mAuth.signOut();
+          Intent i = new Intent( MainActivity.this, SignIn.class);
+          startActivity(i);
+          finish();
             return true;
         }
 
@@ -223,21 +233,8 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
         Util.startForegroundService(MainActivity.this, newintent);
 
-        int sr=  Util.getNetworkType(this);
-
-        Log.d(TAG, "onNoteClick: "+sr);
-
         toasty("You are now listing to " + stationList.get(position).getName());
 
-    }
-
-    @Override
-    public void onDotsClick(int position) {
-        Intent intent = new Intent(MainActivity.this,FavouritStationActivity.class);
-        intent.putExtra(STATION_FAVOURIT,position);
-        intent.putExtra(STATION_FAVOURIT_NAME,stationList.get(position).getName());
-        intent.putExtra(STATION_FAVOURIT_URL,stationList.get(position).getUrl());
-        intent.putExtra(STATION_FAVOURIT_IMG,stationList.get(position).getFavicon());
     }
 
     /**

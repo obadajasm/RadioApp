@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_placeholder"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FavouritStationActivity"></activity>
+        <activity android:name=".RestPasswordActivity"></activity>
         <activity android:name=".sign.SignUp" />
         <activity android:name=".sign.SignIn">
             <intent-filter>

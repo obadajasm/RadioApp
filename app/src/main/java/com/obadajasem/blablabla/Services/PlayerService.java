@@ -7,6 +7,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -32,9 +34,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.obadajasem.blablabla.MainActivity;
 import com.obadajasem.blablabla.R;
-import com.obadajasem.blablabla.model.Station;
 
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -51,28 +52,13 @@ public class PlayerService extends Service {
     private PlayerNotificationManager playerNotificationManager;
     public static final String TAG = "PlayerService";
     private Bitmap notification_img;
-    RemoteViews progressBar;
 
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        progressBar = new RemoteViews(getPackageName(), R.layout.content_main);
-        progressBar.setViewVisibility(R.id.progressbar,VISIBLE);
-
-    }
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
 
         try {
-//            station= intent.getParcelableExtra(STATION);
-//
-//            Log.d(TAG, "onStartCommand: "+station);
-//            Log.d(TAG, "onStartCommand: "+station.get(0).getName());
-
             if (exoPlayer.isPlaying()) {
                 exoPlayer.setPlayWhenReady(false);
             }
@@ -80,23 +66,7 @@ public class PlayerService extends Service {
         } catch (Exception e) {
             Log.d(TAG, "onStartCommand: " + e.toString());
         }
-        try {
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.mipmap.placeholder);
-
-            notification_img = Glide.with(PlayerService.this)
-                    .setDefaultRequestOptions(requestOptions)
-                    .asBitmap().load(Uri.parse(intent.getStringExtra(STATION_IMG)))
-                    .submit(1000, 1000).get();
-
-        } catch (Exception e) {
-            Log.d(TAG, "getCurrentLargeIcon: " + e.toString());
-        }
-        Log.d(TAG, "getCurrentLargeIcon: " + intent.getStringExtra(STATION_IMG));
-
-        final String s = intent.getStringExtra(STATION_NAME);
-        Log.d(TAG, "onStartCommand: service" + s);
-        Log.d(TAG, "onStartCommand: ");
+        
         Uri uri = Uri.parse(intent.getStringExtra(STATION_URL));
         TrackSelector trackSelector = new DefaultTrackSelector();
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
@@ -121,26 +91,13 @@ public class PlayerService extends Service {
                         if (exoPlayer.isPlaying()) {
                             exoPlayer.setPlayWhenReady(false);
                         }
-                        intent.putExtra(BUFFERING, "isBuffering");
-                        if (progressBar != null) {
-                            progressBar.setViewVisibility(R.id.progressbar, GONE);
-                            Log.d(TAG, "onPlayerStateChanged: VISIBILE ");
-
-                        }
                         break;
 
                     case Player.STATE_IDLE:
                         break;
 
                     case Player.STATE_READY:
-
                         Log.e(TAG, "onPlayerStateChanged: Ready to play.");
-                        if (progressBar != null) {
-                            progressBar.setViewVisibility(R.id.progressbar, GONE);
-                        }
-                        Log.d(TAG, "onPlayerStateChanged:  GONE");
-//
-
                         break;
 
                     default:
@@ -165,7 +122,7 @@ public class PlayerService extends Service {
             @Override
             public PendingIntent createCurrentContentIntent(Player player) {
                 Intent i = new Intent(PlayerService.this, MainActivity.class);
-                return PendingIntent.getActivity(PlayerService.this, 0, i, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                return PendingIntent.getActivity(PlayerService.this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             }
 
             @Nullable
@@ -177,6 +134,29 @@ public class PlayerService extends Service {
             @Nullable
             @Override
             public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "run:  inside run");
+                        try {
+                            notification_img = Glide.with(PlayerService.this)
+                                    .asBitmap().load(Uri.parse(intent.getStringExtra(STATION_IMG)))
+                                    .fitCenter()
+                                    .submit(1000, 1000).get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+
+                        }
+
+                    }
+                });
+
+                Log.d(TAG, "getCurrentLargeIcon: " + intent.getStringExtra(STATION_IMG));
+
+
                 return notification_img;
             }
         }, new PlayerNotificationManager.NotificationListener() {
@@ -184,32 +164,23 @@ public class PlayerService extends Service {
             public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
                 Log.d(TAG, "onDestroy: ");
                 Log.d(TAG, "onNotificationCancelled: " + dismissedByUser + "  id  " + notificationId);
-                //new ADDED
                 stopForeground(true);
                 stopSelf();
 
             }
 
             @Override
-            public void onNotificationPosted(int notificationId, Notification notification,
-                                             boolean ongoing) {
+            public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
                 startForeground(notificationId, notification);
-
-
             }
 
         });
-
-        playerNotificationManager.setUseNavigationActions(false);
+        playerNotificationManager.setRewindIncrementMs(0);
+        playerNotificationManager.setFastForwardIncrementMs(0);
         playerNotificationManager.setUsePlayPauseActions(true);
-        playerNotificationManager.setUseNavigationActionsInCompactView(false);
-        playerNotificationManager.setPlayer(exoPlayer);
         playerNotificationManager.setUseStopAction(true);
-//        playerNotificationManager.set
-
-//        playerNotificationManager
-        Log.d(TAG, "onCustomAction: ");
-
+        playerNotificationManager.setUseNavigationActions(false);
+        playerNotificationManager.setPlayer(exoPlayer);
 
         return START_NOT_STICKY;
     }

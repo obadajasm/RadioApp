@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#7A1D1E</color>
-    <color name="colorPrimaryDark">#FF9208</color>
-    <color name="colorAccent">#FFE2B3</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+
+    <color name="bg_color">#f3f5f9</color>
+    <color name="darkgrey">#424242</color>
+    <color name="gradientViolet">#8A52E9</color>
+    <color name="gradientLightBlue">#376DF6</color>
+    <color name="white">#ffffff</color>
+    >
     <color name="viewBg">#f1f5f8</color>
     <color name="album_title">#4c4c4c</color>
     <color name="btn">#0096B5</color>
+    <color name="cover">#A28C80</color>
 
 </resources>
 

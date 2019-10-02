@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,27 +19,47 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.internal.InternalTokenProvider;
 import com.obadajasem.blablabla.MainActivity;
 import com.obadajasem.blablabla.R;
 
 public class SignUp extends AppCompatActivity {
     private static final String TAG = "Signup";
     Button signup_in;
+    TextView logintv;
     EditText emailet,passet,usernameet;
+    ImageView backimg;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        signup_in=findViewById(R.id.signup_up);
-        emailet=findViewById(R.id.signup_email);
-        passet=findViewById(R.id.signup_password);
-        usernameet=findViewById(R.id.signup_username);
-
+        signup_in=findViewById(R.id.btn_signup);
+        emailet=findViewById(R.id.input_email);
+        passet=findViewById(R.id.input_password);
+        usernameet=findViewById(R.id.input_name);
+        backimg=findViewById(R.id.backbtn);
+        logintv = findViewById(R.id.logintv);
         mAuth = FirebaseAuth.getInstance();
 
+        backimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignUp.this, SignIn.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        logintv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent i = new Intent(SignUp.this, SignIn.class);
+                startActivity(i);
+                finish();
+            }
+        });
         signup_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
