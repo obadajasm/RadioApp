@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
+
         android:name=".Services.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_placeholder"
@@ -14,23 +15,34 @@
         android:roundIcon="@mipmap/ic_placeholder"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RestPasswordActivity"></activity>
+        <activity android:name=".RestPasswordActivity" />
         <activity android:name=".sign.SignUp" />
-        <activity android:name=".sign.SignIn">
+        <activity android:name=".sign.SignIn" />
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
 
         <service android:name=".Services.PlayerService" />
         <service android:name=".Services.myFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
+
         </service>
+
+        <!-- Sample AdMob App ID: -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2832395333571312~8460122953"/>
+
+
+
+
     </application>
 
 </manifest>

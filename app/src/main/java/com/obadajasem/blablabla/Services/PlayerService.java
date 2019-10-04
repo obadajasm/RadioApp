@@ -8,15 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -37,8 +34,6 @@ import com.obadajasem.blablabla.R;
 
 import java.util.concurrent.ExecutionException;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.obadajasem.blablabla.MainActivity.STATION_IMG;
 import static com.obadajasem.blablabla.MainActivity.STATION_NAME;
 import static com.obadajasem.blablabla.MainActivity.STATION_STATE;
@@ -122,7 +117,7 @@ public class PlayerService extends Service {
             @Override
             public PendingIntent createCurrentContentIntent(Player player) {
                 Intent i = new Intent(PlayerService.this, MainActivity.class);
-                return PendingIntent.getActivity(PlayerService.this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+                return PendingIntent.getActivity(PlayerService.this, 0, i, PendingIntent.FLAG_NO_CREATE);
             }
 
             @Nullable

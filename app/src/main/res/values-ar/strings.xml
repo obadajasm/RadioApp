@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">راديو سورية</string>
+    <string name="log_in">تسجيل الدخول</string>
+    <string name="login_desc">ادخل تفاصيل حسابك للدخول</string>
+    <string name="new_account">"حساب جديد "</string>
+    <string name="reset_pass_message">يبدو انك نسيت كلمة السر</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="signup_desc">ابدأ بادخال اسمك</string>
+    <string name="sing_in">تسجيل الدخول</string>
+</resources>

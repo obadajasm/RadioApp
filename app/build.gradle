@@ -3,20 +3,25 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.obadajasem.blablabla"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+    resConfigs "en","ar"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
+
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,7 +37,6 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
 
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -42,6 +46,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.5'
+
+
+    implementation 'com.google.android.gms:play-services-ads:18.2.0'
+
 
 
 }

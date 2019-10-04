@@ -1,18 +1,15 @@
 <resources>
-    <string name="app_name">blaBlaBla</string>
+    <string name="app_name">RadioApp - Syria </string>
     <string name="sign_out">Sign Out</string>
-    <string name="action_add_favourite">Add to Favourites</string>
-    <string name="action_play_next">Play Next</string>
-    <string name="backdrop_title">LOVE MUSIC</string>
-    <string name="CHANNEL_ID">1</string>
+    <string name="sing_in">Sign In </string>
+    <string name="CHANNEL_ID" translatable="false">1</string>
     <string name="new_account">New Account</string>
-    <string name="signup_desc">Start by entering your name and categorie below.</string>
-
+    <string name="signup_desc">"Start by entering your name "</string>
     <string name="login_desc">Enter your login details to access your account</string>
     <string name="log_in">Log In</string>
-    <string name="message">This App will send you an SMS message for verification and standard rates apply.. Kindly enter your phone Number</string>
 
-    <string name="reset_pass_message">Seems like you forgot your password for MarksPlus. If this is true, click below to reset your password.</string>
+
+    <string name="reset_pass_message">Seems like you forgot your password . If this is true, click below to reset your password.</string>
 
 
 </resources>

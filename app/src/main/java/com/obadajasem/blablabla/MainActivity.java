@@ -1,11 +1,9 @@
 package com.obadajasem.blablabla;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -13,36 +11,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.obadajasem.blablabla.Services.PlayerService;
 import com.obadajasem.blablabla.adapter.AlbumsAdapter;
 import com.obadajasem.blablabla.api.RadioApi;
 import com.obadajasem.blablabla.model.Station;
-import com.obadajasem.blablabla.Services.PlayerService;
 import com.obadajasem.blablabla.sign.SignIn;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnNoteListener  {
+public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnNoteListener {
     private static final String TAG = "MainActivity";
     public static final String STATION_NAME = "NAME";
     public static final String STATION_STATE = "STATE";
@@ -52,30 +50,33 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
     private AlbumsAdapter adapter;
     private List<Station> stationList;
     private FirebaseAuth mAuth;
-//    private TextView gomaintv;
     private Menu menu;
     private ProgressBar progressBar;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//       gomaintv = findViewById(R.id.gomain);
+
         progressBar = findViewById(R.id.progressbar);
+        mAdView = findViewById(R.id.adView);
+        recyclerView = findViewById(R.id.recycler_view);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+                Log.d(TAG, "onInitializationComplete: ");
+            }
+
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
         mAuth = FirebaseAuth.getInstance();
-
-//try {
-//    String  username = mAuth.getCurrentUser().getDisplayName() ;
-//
-//    if( TextUtils.isEmpty(username)) {
-//        welcometv.setText("Welcome ");
-//    }else{
-//        welcometv.setText("Welcome " + username);
-//    }
-//}catch (Exception e ){
-//    Log.d(TAG, "onCreate: "+e.toString());
-//}
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
         initCollapsingToolbar();
 
-        recyclerView = findViewById(R.id.recycler_view);
         stationList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, stationList, MainActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -91,11 +91,18 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        fetchData();
-   try {
+
+
+        try {
             Glide.with(this).load(R.drawable.newcover).into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+
+        Log.d(TAG, "onCreate: " + stationList.toString());
+        if (stationList.size() == 0) {
+            fetchData();
         }
     }
 
@@ -140,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
-
 
 
     }
@@ -199,11 +205,21 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            if(mAuth!= null)
-          mAuth.signOut();
-          Intent i = new Intent( MainActivity.this, SignIn.class);
-          startActivity(i);
-          finish();
+            if (mAuth != null)
+                mAuth.signOut();
+            Intent i = new Intent(MainActivity.this, SignIn.class);
+            startActivity(i);
+            finish();
+            return true;
+        } else if (id == R.id.action_signin) {
+            Intent i = new Intent(MainActivity.this, SignIn.class);
+            startActivity(i);
+            return true;
+        }else if (id == R.id.exit) {
+            Intent i = new Intent(MainActivity.this, PlayerService.class);
+            stopService(i);
+            finish();
+
             return true;
         }
 
@@ -229,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         newintent.putExtra(STATION_URL, stationList.get(position).getUrl());
         newintent.putExtra(STATION_NAME, stationList.get(position).getName());
         newintent.putExtra(STATION_STATE, stationList.get(position).getState());
-        newintent.putExtra(STATION_IMG,stationList.get(position).getFavicon());
+        newintent.putExtra(STATION_IMG, stationList.get(position).getFavicon());
 
         Util.startForegroundService(MainActivity.this, newintent);
 
@@ -238,8 +254,9 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
     }
 
     /**
-//         * RecyclerView item decoration - give equal margin around grid item
-//         */
+     * //         * RecyclerView item decoration - give equal margin around grid item
+     * //
+     */
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
