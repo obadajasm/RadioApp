@@ -7,6 +7,8 @@
     <string name="signup_desc">"Start by entering your name "</string>
     <string name="login_desc">Enter your login details to access your account</string>
     <string name="log_in">Log In</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-2832395333571312/1203136387</string>
+    <string name="banner_app_id" translatable="false">ca-app-pub-2832395333571312~8460122953</string>
 
 
     <string name="reset_pass_message">Seems like you forgot your password . If this is true, click below to reset your password.</string>

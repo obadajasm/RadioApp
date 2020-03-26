@@ -17,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.ads.AdRequest;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
     private Menu menu;
     private ProgressBar progressBar;
     private AdView mAdView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         progressBar = findViewById(R.id.progressbar);
         mAdView = findViewById(R.id.adView);
         recyclerView = findViewById(R.id.recycler_view);
-
+        swipeRefreshLayout= findViewById(R.id.swipe);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -104,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         if (stationList.size() == 0) {
             fetchData();
         }
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchData();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     private void fetchData() {
@@ -142,7 +153,9 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
 
             @Override
             public void onFailure(Call<List<Station>> call, Throwable t) {
-                toasty("Something Went Bad Check Yout Internet Connection Or Try Again");
+
+                Toast.makeText(MainActivity.this, "Something Went Bad ..." +
+                        "Check Your Internet Connection Or Try Again", Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
@@ -204,14 +217,18 @@ public class MainActivity extends AppCompatActivity implements AlbumsAdapter.OnN
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            if (mAuth != null)
+        if (id == R.id.action_signout) {
+            if (mAuth.getCurrentUser() != null){
                 mAuth.signOut();
             Intent i = new Intent(MainActivity.this, SignIn.class);
             startActivity(i);
             finish();
+            }else{
+                Toast.makeText(this,"SIgnIn first !",Toast.LENGTH_SHORT).show();
+            }
             return true;
         } else if (id == R.id.action_signin) {
+
             Intent i = new Intent(MainActivity.this, SignIn.class);
             startActivity(i);
             return true;
