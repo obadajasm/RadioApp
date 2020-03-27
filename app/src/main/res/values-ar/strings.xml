@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">راديو سورية</string>
+    <string name="app_name">تطبيق الراديو </string>
     <string name="log_in">تسجيل الدخول</string>
     <string name="login_desc">ادخل تفاصيل حسابك للدخول</string>
     <string name="new_account">"حساب جديد "</string>

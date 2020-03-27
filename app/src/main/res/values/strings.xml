@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RadioApp - Syria </string>
+    <string name="app_name">RadioApp </string>
     <string name="sign_out">Sign Out</string>
     <string name="sing_in">Sign In </string>
     <string name="CHANNEL_ID" translatable="false">1</string>
