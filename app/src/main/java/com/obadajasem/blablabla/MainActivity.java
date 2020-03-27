@@ -451,7 +451,7 @@ if( ! countryList.isEmpty()){
         flatDialog.setTitle("Author")
                 .setSubtitle("Contact me")
                 .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark))
-                .setFirstButtonText("Email : obadajasem0.com")
+                .setFirstButtonText("Email : obadajasm0.com")
                 .setFirstButtonColor(Color.GRAY)
                 .setSecondButtonText("CANCEL")
                 .withFirstButtonListner(new View.OnClickListener() {
@@ -459,7 +459,8 @@ if( ! countryList.isEmpty()){
                     public void onClick(View view) {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("message/rfc822");
-                        intent.putExtra(Intent.EXTRA_EMAIL, "obadajasem0@gmail.com" );
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"obadajasm0@gmail.com" });
+
                         startActivity(Intent.createChooser(intent, "Choose an email client"));
                     }
                 })
