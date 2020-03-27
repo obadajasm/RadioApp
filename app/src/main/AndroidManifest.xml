@@ -19,7 +19,7 @@
         <activity android:name=".RestPasswordActivity" />
         <activity android:name=".sign.SignUp" />
         <activity android:name=".sign.SignIn" />
-        <activity android:name=".MainActivity" android:launchMode="singleTop">
+        <activity android:name=".MainActivity" android:launchMode="singleTop" android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
