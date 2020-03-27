@@ -10,7 +10,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-    resConfigs "en","ar"
+        resConfigs "en", "ar"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -45,10 +45,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.5'
-
+    implementation 'com.github.mejdi14:Flat-Dialog-Android:1.0.4'
 
     implementation 'com.google.android.gms:play-services-ads:18.2.0'
-
 
 
 }

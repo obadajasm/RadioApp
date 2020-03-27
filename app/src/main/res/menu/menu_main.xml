@@ -16,7 +16,19 @@
         android:orderInCategory="100"
         android:title="@string/sign_out"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_country"
+        android:orderInCategory="100"
+    android:icon="@drawable/ic_flag"
+        android:title="Change Country"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/about"
+        android:orderInCategory="100"
 
+        android:title="about"
+        android:icon="@drawable/ic_info"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/exit"
         android:orderInCategory="100"

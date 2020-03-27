@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -109,6 +110,7 @@ public class PlayerService extends Service {
             @Override
             public String getCurrentContentTitle(Player player) {
 
+
                 return intent.getStringExtra(STATION_NAME);
             }
 
@@ -117,7 +119,8 @@ public class PlayerService extends Service {
             @Override
             public PendingIntent createCurrentContentIntent(Player player) {
                 Intent i = new Intent(PlayerService.this, MainActivity.class);
-                return PendingIntent.getActivity(PlayerService.this, 0, i, PendingIntent.FLAG_NO_CREATE);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                return PendingIntent.getActivity(PlayerService.this, 0, i, PendingIntent.FLAG_ONE_SHOT);
             }
 
             @Nullable
