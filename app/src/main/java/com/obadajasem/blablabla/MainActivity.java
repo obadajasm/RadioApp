@@ -451,7 +451,7 @@ if( ! countryList.isEmpty()){
         flatDialog.setTitle("Author")
                 .setSubtitle("Contact me")
                 .setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark))
-                .setFirstButtonText("Email : obadajasm0@gmail.com")
+                .setFirstButtonText("obadajasm0@gmail.com")
                 .setFirstButtonColor(Color.GRAY)
                 .setSecondButtonText("CANCEL")
                 .withFirstButtonListner(new View.OnClickListener() {
